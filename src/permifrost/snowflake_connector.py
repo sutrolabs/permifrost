@@ -139,7 +139,7 @@ class SnowflakeConnector:
         names = []
 
         if database:
-            query = f"SHOW TERSE SCHEMAS IN DATABASE {database}"
+            query = f"SHOW TERSE SCHEMAS IN DATABASE {SnowflakeConnector.snowflaky_patch(database)}"
         else:
             query = "SHOW TERSE SCHEMAS IN ACCOUNT"
 
@@ -155,9 +155,9 @@ class SnowflakeConnector:
         names = []
 
         if schema:
-            query = f"SHOW TERSE TABLES IN SCHEMA {schema}"
+            query = f"SHOW TERSE TABLES IN SCHEMA {SnowflakeConnector.snowflaky_patch(schema)}"
         elif database:
-            query = f"SHOW TERSE TABLES IN DATABASE {database}"
+            query = f"SHOW TERSE TABLES IN DATABASE {SnowflakeConnector.snowflaky_patch(database)}"
         else:
             query = "SHOW TERSE TABLES IN ACCOUNT"
 
@@ -175,9 +175,9 @@ class SnowflakeConnector:
         names = []
 
         if schema:
-            query = f"SHOW TERSE VIEWS IN SCHEMA {schema}"
+            query = f"SHOW TERSE VIEWS IN SCHEMA {SnowflakeConnector.snowflaky_patch(schema)}"
         elif database:
-            query = f"SHOW TERSE VIEWS IN DATABASE {database}"
+            query = f"SHOW TERSE VIEWS IN DATABASE {SnowflakeConnector.snowflaky_patch(database)}"
         else:
             query = "SHOW TERSE VIEWS IN ACCOUNT"
 
@@ -197,9 +197,9 @@ class SnowflakeConnector:
         future_grants: Dict[str, Any] = {}
 
         if schema:
-            query = f"SHOW FUTURE GRANTS IN SCHEMA {schema}"
+            query = f"SHOW FUTURE GRANTS IN SCHEMA {SnowflakeConnector.snowflaky_patch(schema)}"
         elif database:
-            query = f"SHOW FUTURE GRANTS IN DATABASE {database}"
+            query = f"SHOW FUTURE GRANTS IN DATABASE {SnowflakeConnector.snowflaky_patch(database)}"
         else:
             pass
 
@@ -417,3 +417,7 @@ class SnowflakeConnector:
             name = f'"{name}"'
 
         return name
+
+    @staticmethod
+    def snowflaky_patch(name: str) -> str:
+        return SnowflakeConnector.snowflaky(name).upper()
